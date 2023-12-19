@@ -16,7 +16,7 @@ namespace ProjectManager.DataLayer.Entity
         public DateTime? Deadline {  get; set; }
         public Status? Status { get; set; }
 
-        public virtual Project Project{ get; set; }
+        public virtual Project? Project{ get; set; }
         public virtual ICollection<Point>? Points { get; set; }
     }
 

@@ -1,0 +1,53 @@
+﻿@using ProjectManager.DataLayer.Entity
+@model IEnumerable<MyTask>
+@{
+    ViewBag.Title = "Список задач";
+    var project = ViewBag.Project as Project;
+}
+
+<h1>Список задач для проекту @project.Name</h1>
+<p>
+    <a asp-action="Create" asp-route-projectId="@project.Id">Додати нову задачу</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Deadline)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Deadline)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" asp-route-projectId="@project.Id">Редагувати</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" asp-route-projectId="@project.Id">Видалити</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

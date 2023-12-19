@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProjectManager.DataLayer.Context;
 using ProjectManager.DataLayer.Entity;
 
@@ -15,7 +16,7 @@ namespace ProjectManager.Controllers
 
         public IActionResult Index()
         {
-            var projects = dataContext.Projects.ToList();
+            var projects = dataContext.Projects.Include(p => p.Tasks).ToList();
 
             return View(projects);
         }
