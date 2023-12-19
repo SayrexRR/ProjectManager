@@ -14,6 +14,6 @@ namespace ProjectManager.DataLayer.Entity
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         
-        public virtual ICollection<MyTask> Tasks { get; set; }
+        public virtual ICollection<MyTask>? Tasks { get; set; }
     }
 }

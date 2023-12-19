@@ -31,7 +31,7 @@ namespace Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 12, 19, 11, 28, 15, 670, DateTimeKind.Local).AddTicks(6170));
+                        .HasDefaultValue(new DateTime(2023, 12, 19, 13, 17, 9, 875, DateTimeKind.Local).AddTicks(8962));
 
                     b.Property<DateTime?>("Deadline")
                         .HasColumnType("datetime2");
@@ -101,9 +101,7 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime>("StartDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 12, 19, 11, 28, 15, 670, DateTimeKind.Local).AddTicks(4289));
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

@@ -14,10 +14,7 @@ namespace ProjectManager.DataLayer.Context
         public DbSet<MyTask> Tasks { get; set; }
         public DbSet<Point> Points { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=localhost;Database=ProjectManagerDb;Trusted_Connection=True;TrustServerCertificate=True");
-        }
+        public DataContext(DbContextOptions options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,7 +25,6 @@ namespace ProjectManager.DataLayer.Context
                 .IsRequired();
 
                 m.Property(p => p.StartDate)
-                .HasDefaultValue(DateTime.Now)
                 .IsRequired();
 
                 m.Property(p => p.EndDate)
