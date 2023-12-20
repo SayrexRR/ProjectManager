@@ -21,5 +21,8 @@ namespace ProjectManager.BusinessLayer.Service
         bool TaskExists(Guid id);
         TaskModel GetFirstTask(Guid id);
         void DeleteTask(Guid id);
+        List<PointModel> GetTaskPoints(Guid id);
+        void AddPoint(PointModel point);
+        void UpdatePoint(PointModel point);
     }
 }

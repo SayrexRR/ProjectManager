@@ -73,7 +73,7 @@ namespace ProjectManager.DataLayer.Repository
 
         public void UpdateTask(MyTask task)
         {
-            var updateTask = db.Tasks.Find(task.Id);
+            var updateTask = db.Tasks.Include(t => t.Points).FirstOrDefault(t => t.Id == task.Id);
 
             updateTask.Title = task.Title;
             updateTask.ProjectId = task.ProjectId;
@@ -101,6 +101,23 @@ namespace ProjectManager.DataLayer.Repository
             var task = db.Tasks.Find(id);
 
             db.Tasks.Remove(task);
+            db.SaveChanges();
+        }
+
+        public List<Point> GetTaskPoints(Guid taskId)
+        {
+            return db.Points.Where(p => p.TaskId == taskId).ToList();
+        }
+
+        public void AddPoint(Point point)
+        {
+            db.Points.Add(point);
+            db.SaveChanges();
+        }
+
+        public void UpdatePoint(Point point)
+        {
+            db.Points.Update(point);
             db.SaveChanges();
         }
     }

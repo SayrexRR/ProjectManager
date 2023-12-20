@@ -1,14 +1,14 @@
 ﻿@using ProjectManager.BusinessLayer.Models
 @model TaskModel
 @{
-    ViewData["Title"] = "Delete task";
+    ViewData["Title"] = "Complete task";
     var project = ViewBag.Project as ProjectModel;
 }
 
-<h1>Delete task</h1>
+<h1>Complete Task</h1>
 
 <div>
-    <h4>Task</h4>
+    <h4>Задача</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -37,9 +37,9 @@
         </dd>
     </dl>
 
-    <form asp-action="Delete" asp-route-id="@Model.Id" asp-route-projectId="@project.Id">
+    <form asp-action="Complete" asp-route-id="@Model.Id" asp-route-projectId="@project.Id">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <input type="submit" value="Complete" class="btn btn-success" /> |
         <a asp-action="Index" asp-route-projectId="@project.Id">Back to task list</a>
     </form>
 </div>

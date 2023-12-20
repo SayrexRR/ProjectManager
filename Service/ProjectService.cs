@@ -86,7 +86,6 @@ namespace ProjectManager.BusinessLayer.Service
                 CreatedAt = t.CreatedAt,
                 Deadline = t.Deadline.Value,
                 Status = (Status)t.Status,
-                Points = (List<PointModel>)t.Points,
             }).ToList();
         }
 
@@ -103,7 +102,6 @@ namespace ProjectManager.BusinessLayer.Service
                 CreatedAt = task.CreatedAt,
                 Deadline = task.Deadline.Value,
                 Status = (Status)task.Status,
-                Points = (List<PointModel>)task.Points,
             };
         }
 
@@ -117,7 +115,6 @@ namespace ProjectManager.BusinessLayer.Service
                 CreatedAt = task.CreatedAt,
                 Deadline = task.Deadline,
                 Status = (DataLayer.Entity.Status)task?.Status,
-                Points = (List<DataLayer.Entity.Point>)task?.Points
             });
         }
 
@@ -132,7 +129,6 @@ namespace ProjectManager.BusinessLayer.Service
                 CreatedAt = task.CreatedAt,
                 Deadline = task.Deadline,
                 Status = (DataLayer.Entity.Status)task?.Status,
-                Points = (List<DataLayer.Entity.Point>)task?.Points
             });
         }
 
@@ -154,13 +150,46 @@ namespace ProjectManager.BusinessLayer.Service
                 CreatedAt = task.CreatedAt,
                 Deadline = task.Deadline.Value,
                 Status = (Status)task.Status,
-                Points = (List<PointModel>)task.Points,
             };
         }
 
         public void DeleteTask(Guid id)
         {
             repository.DeleteTask(id);
+        }
+
+        public List<PointModel> GetTaskPoints(Guid id)
+        {
+            var points = repository.GetTaskPoints(id);
+
+            return points.Select(p => new PointModel
+            {
+                Id = p.Id,
+                Name = p.Name,
+                IsCompleted = p.IsCompleted,
+                TaskId = p.TaskId
+            }).ToList();
+        }
+
+        public void AddPoint(PointModel point)
+        {
+            repository.AddPoint(new DataLayer.Entity.Point
+            {
+                Name = point.Name,
+                IsCompleted = point.IsCompleted,
+                TaskId = point.TaskId
+            });
+        }
+
+        public void UpdatePoint(PointModel point)
+        {
+            repository.UpdatePoint(new DataLayer.Entity.Point
+            {
+                Id = point.Id,
+                Name = point.Name,
+                IsCompleted = point.IsCompleted,
+                TaskId = point.TaskId
+            });
         }
     }
 }

@@ -21,5 +21,8 @@ namespace ProjectManager.DataLayer.Repository
         bool TaskExists(Guid id);
         MyTask GetFirstTask(Guid id);
         void DeleteTask(Guid id);
+        List<Point> GetTaskPoints(Guid taskId);
+        void AddPoint(Point point);
+        void UpdatePoint(Point point);
     }
 }

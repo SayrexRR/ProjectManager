@@ -1,0 +1,30 @@
+﻿@using ProjectManager.BusinessLayer.Models
+@model PointModel
+@{
+    ViewData["Title"] = "Add Point";
+    var task = ViewBag.Task as TaskModel;
+    var points = ViewBag.Points as List<PointModel>;
+}
+
+
+@if (points != null)
+{
+    <div class="container">
+        @foreach (PointModel p in points)
+        {
+            <p>@p.Name</p>
+        }
+    </div>
+}
+
+<form asp-action="Index" method="post" asp-route-taskId="@task.Id">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Створити" class="btn btn-primary" />
+    </div>
+</form>

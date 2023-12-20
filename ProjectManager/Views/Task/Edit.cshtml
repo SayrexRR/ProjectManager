@@ -1,13 +1,13 @@
 ﻿@using ProjectManager.BusinessLayer.Models
 @model TaskModel
 @{
-    ViewBag.Title = "Редагувати задачу";
+    ViewData["Title"] = "Edit task";
     var project = ViewBag.Project as ProjectModel;
 }
 
-<h1>Редагувати задачу</h1>
+<h1>Edit task</h1>
 
-<h4>Задача</h4>
+<h4>Task</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -35,12 +35,12 @@
                 <span asp-validation-for="Deadline" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Зберегти" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index" asp-route-projectId="@project.Id">Назад до списку задач</a>
+    <a asp-action="Index" asp-route-projectId="@project.Id">Back to task list</a>
 </div>

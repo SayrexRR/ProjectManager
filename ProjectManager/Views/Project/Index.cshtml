@@ -1,5 +1,5 @@
-﻿@using ProjectManager.DataLayer.Entity
-@model IEnumerable<Project>
+﻿@using ProjectManager.BusinessLayer.Models
+@model IEnumerable<ProjectModel>
 
 @{
     ViewData["Title"] = "Projects";
@@ -12,19 +12,23 @@
             <th>@Html.DisplayNameFor(model => model.StartDate)</th>
             <th>@Html.DisplayNameFor(model => model.EndDate)</th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     @if (Model != null)
     {
-        @foreach (Project p in Model)
+        @foreach (ProjectModel p in Model)
         {
             <tr>
                 <td>@Html.DisplayFor(modelItem => p.Name)</td>
                 <td>@Html.DisplayFor(modelItem => p.StartDate)</td>
                 <td>@Html.DisplayFor(modelItem => p.EndDate)</td>
                 <td>
-                    <a asp-action="Index" asp-controller="Task" asp-route-projectId="@p.Id">Tasks</a> |
-                    <a asp-action="Delete" asp-controller="Project" asp-route-id="@p.Id">Delete Project</a>
+                    <a class="btn btn-primary" asp-action="Edit" asp-controller="Project" asp-route-id="@p.Id">Edit</a> |
+                    <a class="btn btn-danger" asp-action="Delete" asp-controller="Project" asp-route-id="@p.Id">Delete</a>
+                </td>
+                <td>
+                    <a class="btn btn-info" asp-action="Index" asp-controller="Task" asp-route-projectId="@p.Id">Task List</a>
                 </td>
             </tr>
         }
