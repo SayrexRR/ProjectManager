@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using ProjectManager.BusinessLayer.Service;
 using ProjectManager.DataLayer.Context;
+using ProjectManager.DataLayer.Repository;
 
 namespace ProjectManager
 {
@@ -16,6 +18,9 @@ namespace ProjectManager
             {
                 options.UseSqlServer(projectDbConnectionString);
             });
+
+            builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+            builder.Services.AddScoped<IProjectService, ProjectService>();
 
             var app = builder.Build();
 

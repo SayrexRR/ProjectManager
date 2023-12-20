@@ -1,8 +1,8 @@
-﻿@using ProjectManager.DataLayer.Entity
-@model MyTask
+﻿@using ProjectManager.BusinessLayer.Models
+@model TaskModel
 @{
     ViewBag.Title = "Редагувати задачу";
-    var project = ViewBag.Project as Project;
+    var project = ViewBag.Project as ProjectModel;
 }
 
 <h1>Редагувати задачу</h1>

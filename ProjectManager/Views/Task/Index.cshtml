@@ -1,8 +1,8 @@
-﻿@using ProjectManager.DataLayer.Entity
-@model IEnumerable<MyTask>
+﻿@using ProjectManager.BusinessLayer.Models
+@model IEnumerable<TaskModel>
 @{
     ViewBag.Title = "Список задач";
-    var project = ViewBag.Project as Project;
+    var project = ViewBag.Project as ProjectModel;
 }
 
 <h1>Список задач для проекту @project.Name</h1>

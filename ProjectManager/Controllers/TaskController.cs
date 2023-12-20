@@ -1,40 +1,38 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProjectManager.DataLayer.Context;
-using ProjectManager.DataLayer.Entity;
+using ProjectManager.BusinessLayer.Models;
+using ProjectManager.BusinessLayer.Service;
 
 namespace ProjectManager.Controllers
 {
     [Route("Project/{projectId}/Task")]
     public class TaskController : Controller
     {
-        private readonly DataContext context;
+        private readonly IProjectService service;
 
-        public TaskController(DataContext context)
+        public TaskController(IProjectService service)
         {
-            this.context = context;
+            this.service = service;
         }
 
-        // GET: Projects/1/Tasks
-        public async Task<IActionResult> Index(Guid projectId)
+        public IActionResult Index(Guid projectId)
         {
-            var project = await context.Projects.FindAsync(projectId);
+            var project = service.FindProjectById(projectId);
             if (project == null)
             {
                 return NotFound();
             }
 
-            var tasks = await context.Tasks.Where(t => t.ProjectId == projectId).ToListAsync();
+            var tasks = service.GetProjectTasks(projectId);
             ViewBag.Project = project;
 
             return View(tasks);
         }
 
-        // GET: Projects/1/Tasks/Create
         [Route("Create")]
-        public async Task<IActionResult> Create(Guid projectId)
+        public IActionResult Create(Guid projectId)
         {
-            var project = await context.Projects.FindAsync(projectId);
+            var project = service.FindProjectById(projectId);
             if (project == null)
             {
                 return NotFound();
@@ -45,23 +43,21 @@ namespace ProjectManager.Controllers
             return View();
         }
 
-        // POST: Projects/1/Tasks/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("Create")]
-        public async Task<IActionResult> Create(Guid projectId, MyTask task)
+        public IActionResult Create(Guid projectId, TaskModel task)
         {
             task.CreatedAt = DateTime.Now;
-
+            task.Status = Status.InProcess;
             if (ModelState.IsValid)
             {
                 task.ProjectId = projectId;
-                context.Add(task);
-                await context.SaveChangesAsync();
+                service.AddTask(task);
                 return RedirectToAction(nameof(Index), new { projectId = projectId });
             }
 
-            var project = await context.Projects.FindAsync(projectId);
+            var project = service.FindProjectById(projectId);
             if (project == null)
             {
                 return NotFound();
@@ -72,16 +68,15 @@ namespace ProjectManager.Controllers
             return View(task);
         }
 
-        // GET: Projects/1/Tasks/Edit/5
         [Route("Edit/{id?}")]
-        public async Task<IActionResult> Edit(Guid? id, Guid projectId)
+        public IActionResult Edit(Guid? id, Guid projectId)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var task = await context.Tasks.FindAsync(id);
+            var task = service.GetTaskById(id.Value);
             if (task == null)
             {
                 return NotFound();
@@ -91,7 +86,7 @@ namespace ProjectManager.Controllers
                 return BadRequest();
             }
 
-            var project = await context.Projects.FindAsync(projectId);
+            var project = service.FindProjectById(projectId);
             if (project == null)
             {
                 return NotFound();
@@ -101,11 +96,10 @@ namespace ProjectManager.Controllers
             return View(task);
         }
 
-        // POST: Projects/1/Tasks/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("Edit/{id?}")]
-        public async Task<IActionResult> Edit(Guid id, Guid projectId, MyTask task)
+        public IActionResult Edit(Guid id, Guid projectId, TaskModel task)
         {
             if (id != task.Id)
             {
@@ -116,12 +110,11 @@ namespace ProjectManager.Controllers
             {
                 try
                 {
-                    context.Update(task);
-                    await context.SaveChangesAsync();
+                    service.UpdateTask(task);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TaskExists(task.Id))
+                    if (!service.TaskExists(id))
                     {
                         return NotFound();
                     }
@@ -134,7 +127,7 @@ namespace ProjectManager.Controllers
                 return RedirectToAction(nameof(Index), new { projectId = projectId });
             }
 
-            var project = await context.Projects.FindAsync(projectId);
+            var project = service.FindProjectById(projectId);
             if (project == null)
             {
                 return NotFound();
@@ -144,17 +137,15 @@ namespace ProjectManager.Controllers
             return View(task);
         }
 
-        // GET: Projects/1/Tasks/Delete/5
         [Route("Delete/{id?}")]
-        public async Task<IActionResult> Delete(Guid? id, Guid projectId)
+        public IActionResult Delete(Guid? id, Guid projectId)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var task = await context.Tasks
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var task = service.GetFirstTask(id.Value);
             if (task == null)
             {
                 return NotFound();
@@ -164,7 +155,7 @@ namespace ProjectManager.Controllers
                 return BadRequest();
             }
 
-            var project = await context.Projects.FindAsync(projectId);
+            var project = service.FindProjectById(projectId);
             if (project == null)
             {
                 return NotFound();
@@ -174,21 +165,13 @@ namespace ProjectManager.Controllers
             return View(task);
         }
 
-        // POST: Projects/1/Tasks/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Route("Delete/{id?}")]
-        public async Task<IActionResult> DeleteConfirmed(Guid id, Guid projectId)
+        public IActionResult DeleteConfirmed(Guid id, Guid projectId)
         {
-            var task = await context.Tasks.FindAsync(id);
-            context.Tasks.Remove(task);
-            await context.SaveChangesAsync();
+            service.DeleteTask(id);
             return RedirectToAction(nameof(Index), new { projectId = projectId });
-        }
-
-        private bool TaskExists(Guid id)
-        {
-            return context.Tasks.Any(e => e.Id == id);
         }
     }
 }
