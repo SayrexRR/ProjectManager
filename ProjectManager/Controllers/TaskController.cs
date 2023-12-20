@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using ProjectManager.BusinessLayer.Models;
 using ProjectManager.BusinessLayer.Service;
 
@@ -14,8 +15,11 @@ namespace ProjectManager.Controllers
             this.service = service;
         }
 
-        public IActionResult Index(Guid projectId)
+        public IActionResult Index(Guid projectId, string searchString)
         {
+            ViewBag.Search = searchString;
+
+
             var project = service.FindProjectById(projectId);
             if (project == null)
             {
@@ -23,6 +27,11 @@ namespace ProjectManager.Controllers
             }
 
             var tasks = service.GetProjectTasks(projectId);
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                tasks = tasks.Where(t => t.Title.Contains(searchString)).ToList();
+            }
 
             foreach (var task in tasks)
             {
