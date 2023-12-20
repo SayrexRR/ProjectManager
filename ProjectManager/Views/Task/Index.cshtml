@@ -10,13 +10,22 @@
 <p>
     <a asp-action="Create" asp-route-projectId="@project.Id">Create new task</a>
 </p>
+
+<form asp-action="Index" asp-controller="Task" method="get">
+    <p>
+        <input type="text" name="SearchString" placeholder="Enter task name" value="@ViewBag.Search" />
+        <input type="submit" value="Search" class="btn btn-primary" />
+        <a asp-action="Index" asp-controller="Task">Back to full list</a>
+    </p>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
-            <th>
+            <th class="col-md-3">
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
