@@ -1,0 +1,74 @@
+﻿@using ProjectManager.BusinessLayer.Models
+@model IEnumerable<TaskModel>
+@{
+    ViewData["Title"] = "Task list";
+    var project = ViewBag.Project as ProjectModel;
+    string deadlineStyle = "";
+}
+
+<h1>Task list for project: @project.Name</h1>
+<p>
+    <a asp-action="Create" asp-route-projectId="@project.Id">Create new task</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Deadline)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Deadline)
+                </td>
+                @if (DateTime.Now > item.Deadline)
+                {
+                    deadlineStyle = "text-danger";
+                }
+                else if (item.Status == Status.Completed)
+                {
+                    deadlineStyle = "text-success";
+                }
+                else
+                {
+                    deadlineStyle = "text-primary";
+                }
+                <td class="@deadlineStyle">
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" asp-route-projectId="@project.Id" class="btn btn-primary">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" asp-route-projectId="@project.Id" class="btn btn-danger">Delete</a> |
+                    <a asp-action="Complete" asp-route-id="@item.Id" asp-route-projectId="@project.Id" class="btn btn-success">Complete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
